@@ -1,0 +1,42 @@
+
+<div id="root"></div>
+
+<script>
+function el(i) {
+  var root = document.createElement('div')
+  root.innerText = i
+  return { root: root }
+}
+
+// initial tags
+var tags = '1234'.split('').map(el)
+
+// https://github.com/riot/riot/issues/990#issuecomment-142216140
+function update() {
+  var node = root.firstChild
+
+  tags.forEach(function(tag, i) {
+    node === tag.root ? node = node.nextSibling :
+    node ? root.insertBefore(tag.root, node) :
+    root.appendChild(tag.root)
+  });
+
+  // remaining items can be removed
+  ;[].slice.call(root.children, tags.length).forEach(function(node) {
+    root.removeChild(node)
+  })
+
+}
+
+update()
+tags.splice(1, 1)
+update()
+
+tags.push(el('new one'))
+tags.unshift(el('foo new one'))
+update()
+
+tags.splice(1, 3)
+update()
+
+</script>
