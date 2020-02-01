@@ -82,6 +82,14 @@
 
   <script src="../dist/riot/riot+compiler.js"></script>
   <script src="../dist/tags.js"></script>
-  <script>var tags = riot.mount('*', { test: { zap: 100 }})</script>
+  <script>
+  var tags = riot.mount('*', { test: { zap: 100 }});
+
+  // mount せずに関数を取得
+  var obj = {};
+  riot.util.templates.blog.fn.call(obj);
+  console.log('blog', obj);
+
+  </script>
 
 </body>
