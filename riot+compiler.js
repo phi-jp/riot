@@ -1546,8 +1546,6 @@
    * @param { Tag } target - only if inserting, insert before this tag's first child
    */
   function makeVirtual(src, target) {
-    var this$1 = this;
-
     var head = createDOMPlaceholder();
     var tail = createDOMPlaceholder();
     var frag = createFragment();
@@ -1563,7 +1561,7 @@
     while (el) {
       sib = el.nextSibling;
       frag.appendChild(el);
-      this$1.__.virts.push(el); // hold for unmounting
+      this.__.virts.push(el); // hold for unmounting
       el = sib;
     }
 
@@ -2195,8 +2193,6 @@
    * @param { Tag } target - insert before this tag's first child
    */
   function moveVirtual(src, target) {
-    var this$1 = this;
-
     var el = this.__.head;
     var sib;
     var frag = createFragment();
@@ -2205,7 +2201,7 @@
       sib = el.nextSibling;
       frag.appendChild(el);
       el = sib;
-      if (el === this$1.__.tail) {
+      if (el === this.__.tail) {
         frag.appendChild(el);
         src.insertBefore(frag, target.__.head);
         break
@@ -3070,7 +3066,8 @@
     dom: dom,
     check: check,
     misc: misc,
-    tags: tags
+    tags: tags,
+    templates: __TAG_IMPL
   };
 
   // export the core props/methods
@@ -3107,7 +3104,7 @@
 
   /**
    * Compiler for riot custom tags
-   * @version v3.5.2
+   * @version v3.6.0
    */
 
   // istanbul ignore next
@@ -3660,6 +3657,7 @@
 
   function scopedCSS (tag, css) {
     var scope = ':scope';
+    var selectorsBlacklist = ['from', 'to', ':host'];
 
     return css.replace(CSS_SELECTOR, function (m, p1, p2) {
 
@@ -3672,7 +3670,7 @@
           return sel
         }
 
-        if (!s || s === 'from' || s === 'to' || s.slice(-1) === '%') {
+        if (!s || selectorsBlacklist.indexOf(s) > -1 || s.slice(-1) === '%') {
           return sel
         }
 
@@ -3701,7 +3699,8 @@
     }
 
     css = css.replace(brackets.R_MLCOMMS, '').replace(/\s+/g, ' ').trim();
-    if (tag) { css = scopedCSS(tag, css); }
+    if (tag && (!opts.parserOpts || opts.parserOpts.prefixCSS))
+      { css = scopedCSS(tag, css); }
 
     return css
   }
@@ -3853,7 +3852,9 @@
 
         template: {},
         js: {},
-        style: {}
+        style: {
+          prefixCSS: true
+        }
       };
 
     if (!opts) { opts = {}; }
@@ -3955,7 +3956,7 @@
     return output
   }
 
-  var version$2 = 'v3.5.2';
+  var version$2 = 'v3.6.0';
 
   var compiler = {
     compile: compile,
