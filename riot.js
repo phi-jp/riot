@@ -1546,8 +1546,6 @@
    * @param { Tag } target - only if inserting, insert before this tag's first child
    */
   function makeVirtual(src, target) {
-    var this$1 = this;
-
     var head = createDOMPlaceholder();
     var tail = createDOMPlaceholder();
     var frag = createFragment();
@@ -1563,7 +1561,7 @@
     while (el) {
       sib = el.nextSibling;
       frag.appendChild(el);
-      this$1.__.virts.push(el); // hold for unmounting
+      this.__.virts.push(el); // hold for unmounting
       el = sib;
     }
 
@@ -2195,8 +2193,6 @@
    * @param { Tag } target - insert before this tag's first child
    */
   function moveVirtual(src, target) {
-    var this$1 = this;
-
     var el = this.__.head;
     var sib;
     var frag = createFragment();
@@ -2205,7 +2201,7 @@
       sib = el.nextSibling;
       frag.appendChild(el);
       el = sib;
-      if (el === this$1.__.tail) {
+      if (el === this.__.tail) {
         frag.appendChild(el);
         src.insertBefore(frag, target.__.head);
         break
@@ -3070,7 +3066,8 @@
     dom: dom,
     check: check,
     misc: misc,
-    tags: tags
+    tags: tags,
+    templates: __TAG_IMPL
   };
 
   // export the core props/methods
