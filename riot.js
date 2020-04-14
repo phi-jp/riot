@@ -1961,7 +1961,7 @@
   function tag2(name, tmpl, css, attrs, fn) {
     if (css) { styleManager.add(css, name); }
 
-    __TAG_IMPL[name] = { name: name, tmpl: tmpl, attrs: attrs, fn: fn };
+    __TAG_IMPL[name] = { name: name, tmpl: tmpl, attrs: attrs, fn: fn, css: css };
 
     return name
   }
